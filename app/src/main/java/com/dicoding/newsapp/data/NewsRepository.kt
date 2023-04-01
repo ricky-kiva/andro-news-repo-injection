@@ -57,6 +57,17 @@ class NewsRepository private constructor(
         return result
     }
 
+    fun setBookmarkedNews(news: NewsEntity, bookmarkState: Boolean) {
+        appExecutors.diskIO.execute {
+            news.isBookmarked = bookmarkState
+            newsDao.updateNews(news)
+        }
+    }
+
+    fun getBookmarkedNews(): LiveData<List<NewsEntity>> {
+        return newsDao.getBookmarkedNews()
+    }
+
     // not mandatory, but it's a good practice to make Repository singleton
     companion object {
         @Volatile
